@@ -1,8 +1,54 @@
 import { db } from '../config/db.js'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 export class authModel {
-  static async queryLogin () {
-    const dwdw = await db.execute('SELECT * FROM BancoComunal')
-    console.log(dwdw)
+  
+  static async queryRegister (data) {
+    const { nombre, apellido, contraseña } = data
+
+    const hashedPassword = await bcrypt.hash(contraseña, 10)
+
+    await db.execute({
+      sql: 'INSERT INTO Usuarios (nombre, apellido, contraseña) VALUES (?, ?, ?)',
+      args: [nombre, apellido, hashedPassword]
+    })
+    
+    return { message: "Registrado correctamente." }
   }
+
+  static async queryLogin (data) {
+    const { nombre, contraseña } = data
+
+    // Extraemos la informacion del usuario que quiere ingresar.
+    const existingUser = await db.execute({
+      sql: 'SELECT * FROM Usuarios WHERE nombre = ?',
+      args: [nombre]
+    })
+
+    // Comprobamos si el usuario existe.
+    if(existingUser.rows.length === 0) return { success: false, message: "Nombre o contraseña incorrectos." }
+
+    // Validamos si la contraseña es correcta
+    const validatePassword = await bcrypt.compare(contraseña, existingUser.rows[0].contraseña)
+
+    // Si no es correcta, entra en la condicion.
+    if(!validatePassword) return { success: false, message: "Nombre o contraseña incorrectos." }
+
+    const user = {
+      id_usuario: existingUser.rows[0].id_usuario,
+      nombre: existingUser.rows[0].nombre,
+      apellido: existingUser.rows[0].apellido
+    }
+
+    // Creamos el token de autenticacion.
+    const token = jwt.sign({ id_user: user.id_usuario }, process.env.JWT_SECRET, { expiresIn: '1d' })
+
+    return { 
+      success: true,
+      usuario: user,
+      token
+    }
+  }
+
 }
