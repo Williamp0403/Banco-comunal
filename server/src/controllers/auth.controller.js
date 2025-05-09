@@ -13,8 +13,10 @@ export class authController {
       if(!response.success) return res.status(401).json({ message: response.message })
 
       res.cookie('token', response.token, { 
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,       // Protege la cookie contra accesos desde JS
+        secure: true,         // Necesario para HTTPS en producción
+        sameSite: 'None',     // Permite que la cookie se comparta entre dominios distintos
+        maxAge: 24 * 60 * 60 * 1000, // Expira en 1 día
       }).json({ usuario: response.usuario })
     } catch (e) {
       console.log(e)
