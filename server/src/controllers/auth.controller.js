@@ -24,14 +24,20 @@ export class authController {
     }
   }
 
-  static async logout (req, res) {
+  static async logout(req, res) {
     try {
-      res.clearCookie('token').sendStatus(200)
+      res.cookie('token', '', { 
+        httpOnly: true, 
+        secure: true, 
+        sameSite: 'None', 
+        expires: new Date(0)
+      }).sendStatus(200);
     } catch (e) {
-      console.log(e)
-      return res.status(500).json({ message: 'Hubo un problema en el servidor. Por favor, intenta de nuevo más tarde.' })
+      console.log(e);
+      return res.status(500).json({ message: 'Hubo un problema en el servidor. Por favor, intenta de nuevo más tarde.' });
     }
   }
+  
 
   static verifyToken (req, res) {
     const { token } = req.cookies
