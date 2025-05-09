@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import authRoutes from "./routes/auth.routes.js"
 import projectRoutes from "./routes/project.routes.js"
+import bankRoutes from "./routes/bank.routes.js"
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use(cookieParser())
 
 app.use(authRoutes)
 app.use(projectRoutes)
+app.use(bankRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto http://localhost:${PORT}`)

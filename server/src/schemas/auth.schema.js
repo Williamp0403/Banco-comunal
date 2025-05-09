@@ -4,7 +4,7 @@ export const registerSchema = z.object({
   nombre: z
     .string({ message: 'El nombre es requerido.' })
     .trim()
-    .min(3, { message: 'El nombre debe tener más de 3 caracterres' })
+    .min(3, { message: 'El nombre debe tener más de 3 caracteres.' })
     .max(20, { message: 'El nombre no puede tener más de 20 caracteres.' }),
   apellido: z
     .string({ message: 'El apellido es requerido.' })

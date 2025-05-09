@@ -1,4 +1,5 @@
 import { authModel } from "../models/auth.js"
+import jwt from 'jsonwebtoken'
 
 export class authController {
   static async register (req, res) {
@@ -9,13 +10,15 @@ export class authController {
   static async login (req, res) {
     try {
       const response = await authModel.queryLogin(req.body)
-      if(!response.success) return res.status(404).json({ message: response.message })
+      if(!response.success) return res.status(401).json({ message: response.message })
 
       res.cookie('token', response.token, { 
+        httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
       }).json({ usuario: response.usuario })
     } catch (e) {
       console.log(e)
+      return res.status(500).json({ message: 'Hubo un problema en el servidor. Por favor, intenta de nuevo más tarde.' })
     }
   }
 
@@ -24,6 +27,21 @@ export class authController {
       res.clearCookie('token').sendStatus(200)
     } catch (e) {
       console.log(e)
+      return res.status(500).json({ message: 'Hubo un problema en el servidor. Por favor, intenta de nuevo más tarde.' })
     }
+  }
+
+  static verifyToken (req, res) {
+    const { token } = req.cookies
+    if(!token) return res.status(401).json({ message: 'No hay token, acceso denegado' })
+
+    jwt.verify(token, process.env.JWT_SECRET, async (error, user) => {
+      if(error) return res.status(401).json({ message: 'Token inválido.' })
+
+      const userFound = await authModel.queryGetUser(user.id_user)
+      if(!userFound.success) return res.status(401).json({ message: userFound.message })
+
+      res.json({ usuario: userFound.usuario })
+    })
   }
 }

@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../hooks/useAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema } from '../schemas/auth.schema'
 import { Input } from '../components/Input'
+import { useAuth } from '../context/AuthContext'
 
 export function LoginPage () {
   const { login } = useAuth()
@@ -11,7 +11,6 @@ export function LoginPage () {
   })
 
   const onSubmit = handleSubmit(data => {
-    console.log(data)
     login(data)
   })
 

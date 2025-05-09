@@ -1,4 +1,6 @@
 import { db } from '../config/db.js'
+import dotenv from 'dotenv'
+dotenv.config()
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
@@ -7,7 +9,7 @@ export class authModel {
   static async queryRegister (data) {
     const { nombre, apellido, contraseña } = data
 
-    const hashedPassword = await bcrypt.hash(contraseña, 10)
+    const hashedPassword = await bcrypt.hash(contraseña, process.env.SALT_ROUND)
 
     await db.execute({
       sql: 'INSERT INTO Usuarios (nombre, apellido, contraseña) VALUES (?, ?, ?)',
@@ -51,4 +53,21 @@ export class authModel {
     }
   }
 
+  static async queryGetUser (id) {
+    const user = await db.execute({
+      sql: 'SELECT * FROM Usuarios WHERE id_usuario = ?',
+      args: [id]
+    })
+    
+    if(user.rows.length === 0) return { success: false, message: 'Usuario no encontrado.' }
+    
+    return {
+      success: true,
+      usuario: {
+        id_usuario: user.rows[0].id_usuario,
+        nombre: user.rows[0].nombre,
+        apellido: user.rows[0].apellido
+      }
+    }
+  }
 }

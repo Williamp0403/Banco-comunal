@@ -6,7 +6,7 @@ export const validateToken = (req, res, next) => {
   if(!token) return res.status(401).json({ message: 'No hay token, acceso denegado.' })
 
   jwt.verify(token, process.env.JWT_SECRET, (error, user) =>{
-    if(error) return res.status(403).json({ message: 'El token no es válido.' })
+    if(error) return res.status(401).json({ message: 'El token no es válido.' })
 
     req.user = user
     next()
