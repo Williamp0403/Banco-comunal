@@ -7,9 +7,9 @@ import { Dropdowns } from './Dropdowns'
 export function HeaderPrivate () {
   return (
     <header className="sticky top-0 bg-zinc-100">
-      <nav className="flex items-center justify-between px-4 sm:px-8">
+      <nav className="flex items-center justify-between px-4 lg:px-8">
         <img src={BancoDeLaComuna} className='w-full max-w-20 sm:max-w-25' alt="Banco de la comuna" />
-        <ul className='hidden sm:flex sm:space-x-10 sm:items-center'>
+        <ul className='hidden md:flex md:justify-between md:gap-x-6 md:items-center'>
           <li>
             <NavLink to='/dashboard'>Inicio</NavLink>
           </li>

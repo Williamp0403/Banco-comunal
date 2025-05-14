@@ -24,17 +24,17 @@ export function NavProjects() {
             <h1 className="text-lg sm:text-xl font-semibold">Proyectos en seguimiento</h1>
             <CloseIcon className='cursor-pointer' onClick={toggleMenu}/>
           </div>
-          <div className="max-h-[80vh] overflow-y-auto">
-            <ul className="flex flex-col gap-y-8">
+          <div className="max-h-[80vh] overflow-y-auto p-2">
+            <ul className="flex flex-col gap-y-5 sm:gap-y-8">
               {
                 projects.map(project => {
                   return (
-                    <li className="w-full p-5 rounded-2xl border-2 border-zinc-300" key={project.id_proyecto}>
+                    <li className="w-full p-3 sm:p-5 rounded-2xl border-2 border-zinc-300" key={project.id_proyecto}>
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-semibold text-xl">{project.nombre}</h3>
+                        <h3 className="font-semibold tex-lg sm:text-xl">{project.nombre}</h3>
                         <Chip title={project.estado}/>
                       </div>
-                        <p className="font-semibold text-lg">{project.monto_asignado} Bs</p>
+                        <p className="font-semibold text-base sm:text-lg">{project.monto_asignado} Bs</p>
                     </li>
                   )
                 })

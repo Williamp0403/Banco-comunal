@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./ProtectedRoute"
 import { BankProvider } from "./context/BankContext"
 import { ProjectsPage } from "./pages/ProjectsPage"
 import { CreateProjectPage } from "./pages/CreateProjectPage"
+import { DetailsProjectPage } from "./pages/DetailsProjectPage"
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/dashboard" element={<DashboardPage/>}/>
                     <Route path="/proyectos" element={<ProjectsPage/>}/>
                     <Route path="/crear-proyecto" element={<CreateProjectPage/>}/>
+                    <Route path="/detalles-proyecto/:id" element={<DetailsProjectPage/>}/>
                   </Route>
 
                   <Route path='*' element={<h1>404 Not Found</h1>}/>

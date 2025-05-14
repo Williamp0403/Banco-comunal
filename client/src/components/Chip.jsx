@@ -1,3 +1,5 @@
+import { Tooltip } from "@mui/material";
+
 export function Chip({ title }) {
   let bgColor;
 
@@ -16,8 +18,10 @@ export function Chip({ title }) {
   }
 
   return (
-    <div className={`${bgColor} text-white text-xs font-semibold rounded-full px-3 py-1`}>
-      <span>{title}</span>
-    </div>
+    <Tooltip title='Estado' placement="top">
+      <div className={`${bgColor} text-white text-xxs inline-block sm:text-xs font-bold rounded-full px-3 py-1`}>
+        <span>{title}</span>
+      </div>
+    </Tooltip>
   );
 }

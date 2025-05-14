@@ -10,9 +10,9 @@ export function BurguerMenu () {
   }
 
   return (
-    <nav className='block relative sm:hidden'>
+    <nav className='block relative md:hidden'>
       <MenuIcon className='cursor-pointer' fontSize='large' onClick={toggleMenu}/>
-      <div className={`${ isOpen ? 'translate-x-0' : 'translate-x-full'} fixed top-0 right-0 h-screen w-[calc(100vw-120px)] bg-zinc-200 transition-transform duration-300 ease-in-out z-15`}>
+      <div className={`${ isOpen ? 'translate-x-0' : 'translate-x-full'} fixed top-0 right-0 h-screen w-[calc(100vw-120px)] bg-zinc-200 transition-transform duration-300 ease-in-out z-50`}>
         <div className="p-5">
           <div className="flex justify-end mb-10">
             <CloseIcon className='cursor-pointer' fontSize='large' onClick={toggleMenu}/>
