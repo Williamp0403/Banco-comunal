@@ -9,6 +9,9 @@ import { BankProvider } from "./context/BankContext"
 import { ProjectsPage } from "./pages/ProjectsPage"
 import { CreateProjectPage } from "./pages/CreateProjectPage"
 import { DetailsProjectPage } from "./pages/DetailsProjectPage"
+import { AddAmountPage } from "./pages/AddAmountPage"
+import { WithdrawAmountPage } from "./pages/WithdrawAmountPage"
+import { MovementsPage } from "./pages/MovementsPage"
 
 function App() {
 
@@ -29,6 +32,9 @@ function App() {
                     <Route path="/proyectos" element={<ProjectsPage/>}/>
                     <Route path="/crear-proyecto" element={<CreateProjectPage/>}/>
                     <Route path="/detalles-proyecto/:id" element={<DetailsProjectPage/>}/>
+                    <Route path="/agregar-saldo" element={<AddAmountPage/>}/>
+                    <Route path="/retirar-saldo" element={<WithdrawAmountPage/>}/>
+                    <Route path="/movimientos" element={<MovementsPage/>}/>
                   </Route>
 
                   <Route path='*' element={<h1>404 Not Found</h1>}/>

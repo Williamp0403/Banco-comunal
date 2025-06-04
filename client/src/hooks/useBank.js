@@ -1,14 +1,14 @@
 import { useState } from "react"
-import { bankRequest, createProjectRequest, getProjectsRequest } from "../api/bank"
+import { addAmountRequest, bankRequest, createProjectRequest, getProjectsRequest, withdrawAmountRequest } from "../api/bank"
 import { toast } from "sonner"
 import { handlingErros } from "../errors/error"
 
 export function useBank() {
-  const [ totalCredit, setTotalCredit ] = useState(0)
+  const [ totalCredit, setTotalCredit ] = useState(null)
   const [ projects, setProjects ] = useState([])
   const [ loading, setLoading ] = useState(true)
 
-  async function getBankData() {
+  async function getBankData () {
     try {
       const [creditResponse, projectsResponse] = await Promise.all([
         bankRequest(),
@@ -27,7 +27,6 @@ export function useBank() {
   async function createProject(data, reset) {
     try {
       const response = await createProjectRequest(data)
-      console.log(response)
       reset()
       toast.success('Proyecto creado correctamente.')
     } catch (e) {
@@ -35,12 +34,58 @@ export function useBank() {
       toast.error(handlingErros(e))
     }
   }
-  
+
+  async function addAmount (data, id, close) {
+    try {
+      const response = await addAmountRequest(data, id)
+      const { project: projectUpdated, newTotalAmount } = response.data
+
+      setProjects(prevProjects =>
+        prevProjects.map(project =>
+          project.id_proyecto === projectUpdated.id_proyecto 
+            ? { ...project, monto_total: projectUpdated.monto_total }
+            : project
+        )
+      )
+      setTotalCredit(newTotalAmount)
+
+      toast.success('Saldo agregado correctamente.')
+      close()
+    } catch (e) {
+      console.log(e)
+      toast.error(handlingErros(e))
+    }
+  }
+
+  async function withdrawAmount (data, id, close) {
+    try {
+      const response = await withdrawAmountRequest(data, id)
+      const { project: projectUpdated, newTotalAmount } = response.data
+
+      setProjects(prevProjects =>
+        prevProjects.map(project =>
+          project.id_proyecto === projectUpdated.id_proyecto 
+            ? { ...project, monto_gastado: projectUpdated.monto_gastado }
+            : project
+        )
+      )
+      setTotalCredit(newTotalAmount)
+
+      toast.success('Operacion realizada exitosamente.')
+      close()
+    } catch (e) {
+      console.log(e)
+      toast.error(handlingErros(e))
+    }
+  }
+
   return {
     totalCredit,
     projects,
     loading,
     getBankData,
-    createProject
+    createProject,
+    addAmount,
+    withdrawAmount
   }
 }

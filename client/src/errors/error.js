@@ -1,6 +1,6 @@
 export function handlingErros (error) {
   
-  if(error.responses?.status === 400) {
+  if(error.response?.status === 400) {
     return "Los datos ingresados son incorrectos."
   }
 
@@ -10,6 +10,10 @@ export function handlingErros (error) {
 
   if (error.response?.status === 404) {
     return error.response.data.message || "Recurso no encontrado."
+  }
+
+    if (error.response?.status === 409) {
+    return error.response.data.message || "Hubo un conflicto en la operacion."
   }
 
   if (error.response?.status === 500) {

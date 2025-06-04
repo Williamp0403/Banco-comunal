@@ -33,4 +33,31 @@ export class ProjectController {
       res.status(500).json({ message: 'Error en el servidor.' })
     }
   }
+
+  static async addAmount (req, res) {
+    try {
+      const { id } = req.params
+      const response = await ProjectModel.queryAddAmount(req.body, id, req.user.id_user)
+      if(!response.success) return res.status(404).json({ message: response.message })
+
+      res.json({ message: response.message, project: response.project, newTotalAmount: response.newTotalAmount })
+      
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ message: 'Error en el servidor.' })     
+    }
+  }
+
+  static async withDrawAmount (req, res) {
+    try {
+      const { id } = req.params
+      const response = await ProjectModel.queryWithDrawAmount(req.body, id, req.user.id_user)
+      if(!response.success) return res.status(response.status).json({ message: response.message })
+
+      res.json({ message: response.message, project: response.project, newTotalAmount: response.newTotalAmount })
+    } catch (e) {
+      console.log(e)
+      res.status(500).json({ message: 'Error en el servidor.' })    
+    }
+  }
 }

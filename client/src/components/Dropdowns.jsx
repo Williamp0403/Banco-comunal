@@ -152,10 +152,13 @@ export function LongMenu({ project }) {
           <EditIcon />
           Editar
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
-          <DeleteIcon />
-          Eliminar
-        </MenuItem>
+        {
+          project.estado === 'Pendiente' && 
+            <MenuItem onClick={handleClose} disableRipple>
+              <DeleteIcon />
+              Eliminar
+            </MenuItem>
+        }
       </StyledMenu>
     </div>
   );

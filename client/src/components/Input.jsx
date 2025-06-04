@@ -1,19 +1,73 @@
-import React from 'react';
+import { TextField } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
+import dayjs from "dayjs"
 
-export function Input ({ type, name, placeholder, register, errors }) {
+export function Input ({ type, name, label, register, errors }) {
   return (
-    <div className="w-full space-y-1">
-      <input 
-        className={`${ errors ? 'border-red-500 placeholder:text-red-500 focus:border-2' : 'border-zinc-400  hover:border-zinc-600 focus:border-2 ' } w-full border rounded-md  focus:outline-none p-3`}
-        type={type} 
-        name={name} 
-        placeholder={placeholder}
-        {...register(name, { valueAsNumber: type === 'number' })} 
+      <TextField 
+        error={!!errors}
+        className='w-full' 
+        label={label} 
+        name={name}
+        type={type}
+        {...register(name, { valueAsNumber: type === "number" }) }
+        variant="outlined" 
+        helperText={errors?.message}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused": {
+              borderColor: "black",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "black",
+              },
+            },
+          },
+          "& .MuiInputLabel-root": {
+            "&.Mui-focused": {
+              color: "black"
+            },
+          },
+        }}
       />
-      { errors && <p className="text-red-500 font-medium text-xs mt-0">{ errors.message }</p> }
-    </div>
-  )
+  );
+}
+
+export function InputDate({ name, label, register, errors }) {
+  const today = dayjs().format('YYYY-MM-DD')
+
+  return (
+      <TextField 
+        error={!!errors}
+        className="w-full"
+        label={label}
+        name={name}
+        type="date"
+        {...register(name)}
+        variant="outlined"
+        helperText={errors?.message}
+        InputLabelProps={{
+          shrink: true
+        }}
+         inputProps={{
+          min: today
+        }}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused": {
+              borderColor: "black",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "black",
+              },
+            },
+          },
+          "& .MuiInputLabel-root": {
+            "&.Mui-focused": {
+              color: "black"
+            },
+          },
+        }}
+      />
+  );
 }
 
 export function InputMonto({ value, onChange, ...props }) {
@@ -32,17 +86,32 @@ export function InputMonto({ value, onChange, ...props }) {
   );
 }
 
-export function Textarea ({ name, placeholder, register, errors }) {
+export function Textarea ({ label, register, name, errors }) {
   return (
-    <div className="w-full space-y-1">
-      <textarea 
-        className={`${ errors ? 'border-red-500 placeholder:text-red-500 focus:border-2' : 'border-zinc-400  hover:border-zinc-600 focus:border-2 ' } w-full h-24 resize-none border rounded-md  focus:outline-none p-3`}
-        name={name} 
-        placeholder={placeholder} 
-        {...register(name)}
+      <TextField 
+        error={!!errors}
+        className='w-full' 
+        label={label} 
+        name={name}
+        {...register(name) }
+        helperText={errors?.message}
+        multiline
+        rows={3}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused": {
+              borderColor: "black",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "black",
+              },
+            },
+          },
+          "& .MuiInputLabel-root": {
+            "&.Mui-focused": {
+              color: "black"
+            },
+          },
+        }}
       />
-      { errors && <p className="text-red-500 font-medium text-xs mt-0">{ errors.message }</p> }
-    </div>
   )
 }
-

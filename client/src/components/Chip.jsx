@@ -14,7 +14,7 @@ export function Chip({ title }) {
       bgColor = 'bg-green-400';
       break;
     default:
-      bgColor = 'bg-red-400';
+      bgColor = 'bg-gray-400';
   }
 
   return (

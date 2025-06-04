@@ -1,4 +1,5 @@
 import z from 'zod'
+import dayjs from "dayjs"
 
 export const projectSchema = z.object({
   nombre: z
@@ -10,10 +11,10 @@ export const projectSchema = z.object({
     .string({ message: 'La descripción es requerida.' })
     .trim()
     .min(5, { message: 'La descripción debe tener más de 5 caracteres.' }),
-  monto_asignado: z
+  monto_total: z
     .number({ message: 'El monto es requerido.' })
     .min(0, { message: 'El monto no puede ser menor a 0bs.' })
-    .max(99999999.99, { message: "El monto máximo permitido es 99,999,999.99bs" }),
+    .max(99999999.99, { message: "El monto máximo permitido es 99.999.999,99bs" }),
   estado: z
     .enum(
       ["Pendiente", "En Progreso"],
@@ -22,5 +23,43 @@ export const projectSchema = z.object({
           message: "El estado debe ser 'Pendiente' o 'En Progreso'."
         })
       }
-    )
+    ),
+  fecha_fin: z.string().optional()
+    }).superRefine((data, ctx) => {
+      if (data.estado === "En Progreso" && !data.fecha_fin) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "La fecha límite es obligatoria.",
+          path: ["fecha_fin"]
+        });
+      }
+
+      if (data.fecha_fin) {
+        const fechaSeleccionada = dayjs(data.fecha_fin);
+        if (!fechaSeleccionada.isValid()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "La fecha no es válida.",
+            path: ["fecha_fin"]
+        });
+      }
+      if (!(fechaSeleccionada.isSame(dayjs(), "day") || fechaSeleccionada.isAfter(dayjs()))) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "La fecha límite no puede ser menor a la actual.",
+        path: ["fecha_fin"]
+      });
+    }
+  }
+})
+
+export const addMountSchema = z.object({ 
+  monto: z
+    .number({ message: 'El monto es requerido.' })
+    .min(0, { message: 'El monto no puede ser menor a 0bs.' })
+    .max(99999999.99, { message: "El monto máximo permitido es 99.999.999,99bs" }),
+  descripcion: z
+    .string({ message: 'La descripción es requerida.' })
+    .trim()
+    .min(5, { message: 'La descripción debe tener más de 5 caracteres.' }),
 })

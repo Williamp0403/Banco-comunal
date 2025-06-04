@@ -4,7 +4,6 @@ import { HeaderPrivate } from "./components/HeaderPrivate";
 import { Loading } from "./components/Loading";
 
 export function ProtectedRoute () {
-  console.log('ProtectedRoute')
   const { isAuthenticated, loading } = useAuth()
 
   if(loading) return <Loading className='flex justify-center items-center min-h-screen'/>

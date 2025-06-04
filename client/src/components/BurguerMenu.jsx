@@ -2,6 +2,7 @@ import { useState } from "react"
 import MenuIcon from '@mui/icons-material/MenuOutlined'
 import CloseIcon from '@mui/icons-material/CloseOutlined';
 import { NavLink } from "react-router-dom";
+import { AccordionUsage } from "./Accordion";
 
 export function BurguerMenu () {
   const [ isOpen, setIsOpen ] = useState(false)
@@ -12,27 +13,53 @@ export function BurguerMenu () {
   return (
     <nav className='block relative md:hidden'>
       <MenuIcon className='cursor-pointer' fontSize='large' onClick={toggleMenu}/>
-      <div className={`${ isOpen ? 'translate-x-0' : 'translate-x-full'} fixed top-0 right-0 h-screen w-[calc(100vw-120px)] bg-zinc-200 transition-transform duration-300 ease-in-out z-50`}>
-        <div className="p-5">
+      <div className={`${ isOpen ? 'translate-x-0' : 'translate-x-full'} fixed top-0 right-0 h-screen w-[calc(100vw-60px)] bg-zinc-200 transition-transform duration-300 ease-in-out z-50`}>
+        <div className="p-2">
           <div className="flex justify-end mb-10">
             <CloseIcon className='cursor-pointer' fontSize='large' onClick={toggleMenu}/>
           </div>
-          <ul className="flex flex-col space-y-10 justify-center items-center">
-            <li onClick={toggleMenu}>
-              <NavLink to='/dashboard' className='text-center'>Inicio</NavLink>
+          <ul className="flex flex-col justify-center items-start">
+            <li className="p-4 border-t border-zinc-500 w-full" onClick={toggleMenu}>
+              <NavLink className='font-bold' to='/dashboard'>Inicio</NavLink>
             </li>
-            <li onClick={toggleMenu}>
-              <NavLink to='/projects' className='text-center'>Proyectos</NavLink>
+            <li className="w-full">
+              <AccordionUsage 
+                title='Proyectos'
+                options={[
+                {
+                  name: 'Ver proyectos',
+                  to: '/proyectos'
+                },
+                {
+                  name: 'Crear proyectos',
+                  to: '/crear-proyecto'
+                }
+              ]}  
+              handleClick={() => setIsOpen(!isOpen)}
+              />
             </li>
-            <li onClick={toggleMenu}>
-              <NavLink to='/history'>Transacciones</NavLink>
+            <li className="w-full">
+              <AccordionUsage 
+                title='Transacciones'
+                  options={[
+                  {
+                    name: 'Agregar fondos',
+                    to: '/proyectos'
+                  },
+                  {
+                    name: 'Retirar fondos',
+                    to: '/crear-proyecto'
+                  }
+                ]}
+                handleClick={() => setIsOpen(!isOpen)}
+              />
             </li>
-            <li onClick={toggleMenu}>
-              <NavLink to='/category'>Movimientos</NavLink>
+            {/* <li>
+              <AccordionUsage title='Movimientos'/>
             </li>
-            <li onClick={toggleMenu}>
-              <NavLink to='/category'>Reportes</NavLink>
-            </li>
+            <li>
+              <AccordionUsage title='Reportes'/>
+            </li> */}
           </ul>
         </div>
       </div>

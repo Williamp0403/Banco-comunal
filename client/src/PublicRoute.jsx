@@ -4,7 +4,6 @@ import { Header } from "./components/Header"
 import { Loading } from "./components/Loading"
 
 export function PublicRoute () {
-  console.log('PublicRoute')
   const { isAuthenticated, loading } = useAuth()
 
   if(loading) return <Loading className='flex justify-center items-center min-h-screen'/>
