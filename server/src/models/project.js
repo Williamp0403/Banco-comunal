@@ -16,22 +16,60 @@ export class ProjectModel {
   static async queryCreateProject (data, id) {
     const { nombre, descripcion, monto_total, estado, fecha_fin } = data
 
-    console.log(fecha_fin)
+    const normalizeText = (text) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    const normalizedNombre = normalizeText(nombre);
+
+    const existingProject = await db.execute({
+      sql: 'SELECT * FROM Proyectos WHERE LOWER(nombre) = LOWER(?)',
+      args: [normalizedNombre]
+    })
+
+    if (existingProject.rows.length > 0) return { success: false, message: "El nombre del proyecto ya existe." }
 
     if(estado === "Pendiente") {
       const pendingProject = await db.execute({
         sql: 'INSERT INTO Proyectos (id_usuario, nombre, descripcion, monto_total, estado) VALUES (?, ?, ?, ?, ?) RETURNING *',
         args: [id, nombre, descripcion, monto_total, estado]
       })
-      return { project: pendingProject.rows }
+      return { success: true, project: pendingProject.rows }
     }
 
     const progressProject = await db.execute({
       sql: 'INSERT INTO Proyectos (id_usuario, nombre, descripcion, monto_total, estado, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?) RETURNING *',
       args: [id, nombre, descripcion, monto_total, estado, fecha_fin]
     })
-    return { project: progressProject.rows }
+    return { successL: true, project: progressProject.rows }
   }
+
+  static async queryUpdateStateProject (data, id) {
+    const { fecha_fin } = data
+    
+    const updatedState = await db.execute({
+      sql: 'UPDATE Proyectos SET estado = "En Progreso", fecha_inicio = CURRENT_TIMESTAMP, fecha_fin = ? WHERE id_proyecto = ? AND estado = "Pendiente" RETURNING *',
+      args: [ fecha_fin, id]
+    })
+
+    if(updatedState.rowsAffected === 0) return { success: false, message: 'El proyecto no existe.' }
+
+    return {
+      success: true,
+      project: {
+        id_proyecto: updatedState.rows[0].id_proyecto,
+        estado: updatedState.rows[0].estado,
+        fecha_inicio: updatedState.rows[0].fecha_inicio,
+        fecha_fin: updatedState.rows[0].fecha_fin
+      }
+    }
+  }
+
+
+  static async updateExpiredProjects () {
+    await db.execute(`
+      UPDATE Proyectos
+      SET estado = 'Completado'
+      WHERE estado = 'En Progreso' AND fecha_fin <= CURRENT_TIMESTAMP;
+      `);
+}
 
   static async queryDeleteProject (id) {
     const deleteProject = await db.execute({

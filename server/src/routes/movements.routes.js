@@ -7,5 +7,6 @@ import { MovementSchema } from '../schemas/movement.schema.js'
 const routes = Router()
 
 routes.get('/movements', validateToken, validateData(MovementSchema), MovementsController.getMovements)
+routes.get('/latest-movements', validateToken, MovementsController.latestMovements)
 
 export default routes

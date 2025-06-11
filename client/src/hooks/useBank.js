@@ -1,26 +1,31 @@
 import { useState } from "react"
-import { addAmountRequest, bankRequest, createProjectRequest, getProjectsRequest, withdrawAmountRequest } from "../api/bank"
+import { addAmountRequest, bankRequest, createProjectRequest, deleteProjectRequest, getProjectsRequest, updateStateRequest, withdrawAmountRequest } from "../api/bank"
 import { toast } from "sonner"
 import { handlingErros } from "../errors/error"
+import { latestMovementsRequest } from "../api/movement"
 
 export function useBank() {
   const [ totalCredit, setTotalCredit ] = useState(null)
   const [ projects, setProjects ] = useState([])
+  const [ latestMovements, setLatestMovements ] = useState([])
   const [ loading, setLoading ] = useState(true)
 
-  async function getBankData () {
+  async function getBankData() {
     try {
-      const [creditResponse, projectsResponse] = await Promise.all([
+      const [{ data: creditData }, { data: projectsData }, { data: movementsData }] = await Promise.all([
         bankRequest(),
-        getProjectsRequest()
+        getProjectsRequest(),
+        latestMovementsRequest()
       ])
-      setTotalCredit(creditResponse.data.saldoTotal)
-      setProjects(projectsResponse.data.proyectos)
+
+      setTotalCredit(creditData.saldoTotal);
+      setProjects(projectsData.proyectos);
+      setLatestMovements(movementsData.ultimosMovimientos);
     } catch (e) {
       console.error(e);
-      toast.error(handlingErros(e))
+      toast.error(handlingErros(e));
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -29,6 +34,42 @@ export function useBank() {
       const response = await createProjectRequest(data)
       reset()
       toast.success('Proyecto creado correctamente.')
+    } catch (e) {
+      console.log(e)
+      toast.error(handlingErros(e))
+    }
+  }
+
+  async function updateState (data, id, handleCloseMenu) {
+    try {
+      const response = await updateStateRequest(data, id)
+      const projectUpdated = response.data.project
+      setProjects(prevProjects =>
+        prevProjects.map(project =>
+          project.id_proyecto === projectUpdated.id_proyecto 
+            ? { 
+                ...project, 
+                estado: projectUpdated.estado, 
+                fecha_inicio: projectUpdated.fecha_inicio,
+                fecha_fin: projectUpdated.fecha_fin
+              }
+            : project
+        )
+      )
+      handleCloseMenu()
+      toast.success('Proyecto actualizado ha "En progreso" exitosamente.')
+    } catch (e) {
+      console.log(e)
+      toast.error(handlingErros(e))
+    }
+  }
+
+  async function deleteProject (id) {
+    try {
+      const response = await deleteProjectRequest(id)
+      console.log(response)
+      setProjects(prevProjects => prevProjects.filter(project => (project.id_proyecto !== id)))
+      toast.success('Proyecto eliminado correctamente.')
     } catch (e) {
       console.log(e)
       toast.error(handlingErros(e))
@@ -82,9 +123,12 @@ export function useBank() {
   return {
     totalCredit,
     projects,
+    latestMovements,
     loading,
     getBankData,
     createProject,
+    updateState,
+    deleteProject,
     addAmount,
     withdrawAmount
   }

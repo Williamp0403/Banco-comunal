@@ -18,30 +18,30 @@ function App() {
   return (
     <AuthProvider>
       <BankProvider>
-        <Toaster richColors/>
-        <BrowserRouter>
-            <div className="min-h-screen bg-zinc-100">
-              <Routes>
+          <Toaster richColors/>
+          <BrowserRouter>
+              <div className="min-h-screen bg-zinc-100">
+                <Routes>
 
-                  <Route element={<PublicRoute/>}>
-                    <Route path="/" element={<LoginPage/>}/>  
-                  </Route>
+                    <Route element={<PublicRoute/>}>
+                      <Route path="/" element={<LoginPage/>}/>  
+                    </Route>
 
-                  <Route element={<ProtectedRoute/>}>  
-                    <Route path="/dashboard" element={<DashboardPage/>}/>
-                    <Route path="/proyectos" element={<ProjectsPage/>}/>
-                    <Route path="/crear-proyecto" element={<CreateProjectPage/>}/>
-                    <Route path="/detalles-proyecto/:id" element={<DetailsProjectPage/>}/>
-                    <Route path="/agregar-saldo" element={<AddAmountPage/>}/>
-                    <Route path="/retirar-saldo" element={<WithdrawAmountPage/>}/>
-                    <Route path="/movimientos" element={<MovementsPage/>}/>
-                  </Route>
+                    <Route element={<ProtectedRoute/>}>  
+                      <Route path="/dashboard" element={<DashboardPage/>}/>
+                      <Route path="/proyectos" element={<ProjectsPage/>}/>
+                      <Route path="/crear-proyecto" element={<CreateProjectPage/>}/>
+                      <Route path="/detalles-proyecto/:id" element={<DetailsProjectPage/>}/>
+                      <Route path="/agregar-saldo" element={<AddAmountPage/>}/>
+                      <Route path="/retirar-saldo" element={<WithdrawAmountPage/>}/>
+                      <Route path="/movimientos" element={<MovementsPage/>}/>
+                    </Route>
 
-                  <Route path='*' element={<h1>404 Not Found</h1>}/>
+                    <Route path='*' element={<h1>404 Not Found</h1>}/>
 
-              </Routes>
-            </div>
-        </BrowserRouter>
+                </Routes>
+              </div>
+          </BrowserRouter>
       </BankProvider>
     </AuthProvider>
   )

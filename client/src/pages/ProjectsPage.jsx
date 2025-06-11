@@ -43,7 +43,7 @@ export function ProjectsPage() {
                   )
                 )}
               </nav>
-              {filtersResult && filtersResult.length > 0 ? (
+              { filtersResult && filtersResult.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {filtersResult.map((project) => (
                     <ProjectCard key={project.id_proyecto} project={project} />

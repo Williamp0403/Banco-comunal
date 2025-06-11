@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js"
 import projectRoutes from "./routes/project.routes.js"
 import bankRoutes from "./routes/bank.routes.js"
 import movementsRoutes from "./routes/movements.routes.js"
+import "./controllers/project.controller.js"
 
 dotenv.config()
 

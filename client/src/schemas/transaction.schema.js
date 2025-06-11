@@ -10,5 +10,6 @@ export const TransitionSchema = z.object({
   descripcion: z
     .string({ message: 'La descripción es requerida.' })
     .trim()
-    .min(5, { message: 'La descripción debe tener más de 5 caracteres.' }),    
+    .min(5, { message: 'La descripción debe tener más de 5 caracteres.' })
+    .max(40, { message: 'La descripción no puede tener más de 40 caracteres' })  
 })

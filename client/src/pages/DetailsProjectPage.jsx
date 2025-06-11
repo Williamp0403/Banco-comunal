@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { useBank } from "../context/BankContext"
-import { Chip } from "../components/Chip";
+import { ChipState } from "../components/Chip";
 import { Loading } from "../components/Loading"
 import CalendarTodayIcon from '@mui/icons-material/CalendarTodayOutlined';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
@@ -31,13 +31,13 @@ export function DetailsProjectPage () {
             loading ? <Loading className="flex justify-center"/>
             : !loading && project ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <article className="flex flex-col md:col-span-3 justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
+                <article className="flex flex-col md:col-span-2 justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
                   <div className="flex items-start justify-between">
                     <h2 className="text-xl sm:text-2xl font-semibold flex-grow">
                       {project.nombre}
                     </h2>
                     <div className="flex-shrink-0">
-                      <Chip title={project.estado} />
+                      <ChipState title={project.estado} />
                     </div>
                   </div>
                   <div className="text-sm sm:text-base">
@@ -88,9 +88,6 @@ export function DetailsProjectPage () {
                       <span className="font-bold text-lg sm:text-xl">{project.monto_gastado}</span>
                     </div>
                   </div>                
-                </article>
-                <article className="md:col-start-2 md:col-span-2 bg-white p-5 border border-zinc-400 rounded-lg">
-                  <h2 className="text-xl sm:text-2xl font-semibold">Historial de Transacciones</h2>
                 </article>
               </div>
             ) : <h2>El proyecto no existe.</h2>

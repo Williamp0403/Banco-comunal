@@ -7,10 +7,11 @@ import { styled, alpha } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { NavLink } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import { ModalDeleteProject, ModalUpdateState } from './Modal';
 
 export function Dropdowns({ title, options }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -148,16 +149,13 @@ export function LongMenu({ project }) {
           <VisibilityIcon />
           Ver detalles
         </MenuItem> 
-        <MenuItem onClick={handleClose} disableRipple>
-          <EditIcon />
-          Editar
-        </MenuItem>
         {
-          project.estado === 'Pendiente' && 
-            <MenuItem onClick={handleClose} disableRipple>
-              <DeleteIcon />
-              Eliminar
-            </MenuItem>
+          project.estado === 'Pendiente' && (
+            <div>
+              <ModalUpdateState id={project.id_proyecto} handleCloseMenu={handleClose}/>
+              <ModalDeleteProject title={project.nombre} id={project.id_proyecto}/>
+            </div>
+          )
         }
       </StyledMenu>
     </div>

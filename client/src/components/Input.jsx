@@ -32,43 +32,47 @@ export function Input ({ type, name, label, register, errors }) {
   );
 }
 
-export function InputDate({ name, label, register, errors }) {
-  const today = dayjs().format('YYYY-MM-DD')
+export function InputDate({ name, label, register, errors, restrictionType }) {
+  const today = dayjs().format("YYYY-MM-DD");
+  const tomorrow = dayjs().add(1, "day").format("YYYY-MM-DD");
 
   return (
-      <TextField 
-        error={!!errors}
-        className="w-full"
-        label={label}
-        name={name}
-        type="date"
-        {...register(name)}
-        variant="outlined"
-        helperText={errors?.message}
-        InputLabelProps={{
-          shrink: true
-        }}
-         inputProps={{
-          min: today
-        }}
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused": {
+    <TextField 
+      {...register(name)}
+      inputRef={register(name).ref}
+      error={!!errors}
+      className="w-full"
+      label={label}
+      name={name}
+      type="date"
+      variant="outlined"
+      helperText={errors?.message}
+      InputLabelProps={{
+        shrink: true
+      }}
+      inputProps={{
+        min: restrictionType === "future" ? tomorrow : undefined, // No permite hoy ni anteriores
+        max: restrictionType === "past" ? today : restrictionType === "noTodayOrFuture" ? dayjs().subtract(1, "day").format("YYYY-MM-DD") : undefined, // No permite hoy ni futuras
+      }}
+      sx={{
+        "& .MuiOutlinedInput-root": {
+          "&.Mui-focused": {
+            borderColor: "black",
+            "& .MuiOutlinedInput-notchedOutline": {
               borderColor: "black",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "black",
-              },
             },
           },
-          "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "black"
-            },
+        },
+        "& .MuiInputLabel-root": {
+          "&.Mui-focused": {
+            color: "black"
           },
-        }}
-      />
+        },
+      }}
+    />
   );
 }
+
 
 export function InputMonto({ value, onChange, ...props }) {
   return (

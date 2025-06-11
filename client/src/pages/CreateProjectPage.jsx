@@ -62,7 +62,9 @@ export function CreateProjectPage () {
                     name='fecha_fin' 
                     label='Fecha Limite'
                     register={register} 
-                    errors={errors.fecha_fin} />
+                    errors={errors.fecha_fin} 
+                    restrictionType="future"
+                  />
                 )
               }
               <SelectBasic 

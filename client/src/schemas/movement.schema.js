@@ -11,20 +11,20 @@ const isPastOrToday = (date) => {
 };
 
 export const MovementSchema = z.object({
-  since: z.string().refine(isValidDate, {
+  since: z.string().min(1, { message: "La fecha 'desde' es obligatoria." }).refine(isValidDate, {
     message: "Fecha inválida o formato incorrecto (YYYY-MM-DD)",
   }).refine(isPastOrToday, {
-    message: "La fecha 'since' no puede ser en el futuro",
+    message: "La fecha 'desde' no puede ser en el futuro",
   }),
 
-  until: z.string().refine(isValidDate, {
+  until: z.string().min(1, { message: "La fecha 'hasta' es obligatoria." }).refine(isValidDate, {
     message: "Fecha inválida o formato incorrecto (YYYY-MM-DD)",
   }).refine(isPastOrToday, {
-    message: "La fecha 'until' no puede ser en el futuro",
+    message: "La fecha 'hasta' no puede ser en el futuro",
   }),
 
   projectId: z.number().optional(),
 }).refine((data) => dayjs(data.since).diff(dayjs(data.until), "day") <= 0, {
-  message: "La fecha 'since' debe ser anterior o igual a 'until'",
+  message: "La fecha 'desde' debe ser anterior o igual a 'hasta'",
   path: ["since"],
 });

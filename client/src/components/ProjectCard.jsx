@@ -1,4 +1,4 @@
-import { Chip } from "./Chip"
+import { ChipState } from "./Chip"
 import { LongMenu } from "./Dropdowns"
 import { useBank } from "../context/BankContext"
 import PersonIcon from '@mui/icons-material/Person';
@@ -32,7 +32,7 @@ export function ProjectCard ({ project }) {
           <PersonIcon htmlColor="gray" fontSize="medium"/>
           <h4 className="text-zinc-700 text-sm font-medium">{project.nombre_usuario + " " + project.apellido_usuario}</h4>
         </div>
-        <Chip title={estado}/>
+        <ChipState title={estado}/>
       </div>
      
     </div>
