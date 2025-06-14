@@ -38,7 +38,7 @@ export class ProjectModel {
       sql: 'INSERT INTO Proyectos (id_usuario, nombre, descripcion, monto_total, estado, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?) RETURNING *',
       args: [id, nombre, descripcion, monto_total, estado, fecha_fin]
     })
-    return { successL: true, project: progressProject.rows }
+    return { success: true, project: progressProject.rows }
   }
 
   static async queryUpdateStateProject (data, id) {
@@ -63,7 +63,7 @@ export class ProjectModel {
   }
 
 
-  static async updateExpiredProjects () {
+  static async queryUpdateExpiredProjects () {
     await db.execute(`
       UPDATE Proyectos
       SET estado = 'Completado'
@@ -107,16 +107,27 @@ export class ProjectModel {
     }
 
     // Agregando la accion a Movimientos.
-    await db.execute({
-      sql: 'INSERT INTO Movimientos (id_usuario, id_proyecto, transaccion, monto, descripcion, fecha) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)',
+    const newMovement = await db.execute({
+      sql: 'INSERT INTO Movimientos (id_usuario, id_proyecto, transaccion, monto, descripcion, fecha) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING *',
       args: [id_user, project.id_proyecto, 'Depósito', monto, descripcion]
+    })
+
+    // Obteniendo la informacion del movimiento.
+    const movement = await db.execute({
+      sql: `SELECT m.id_movimiento, m.id_usuario, u.nombre AS nombre_usuario, u.apellido AS apellido_usuario, m.id_proyecto, p.nombre AS nombre_proyecto, m.transaccion, m.monto, m.descripcion, DATETIME(m.fecha, '-4 hours') AS fecha
+          FROM Movimientos m
+          JOIN Usuarios u ON m.id_usuario = u.id_usuario
+          JOIN Proyectos p ON m.id_proyecto = p.id_proyecto 
+          WHERE m.id_movimiento = ?`,
+      args: [newMovement.rows[0].id_movimiento]
     })
 
     return {
       success: true,
       message: 'Saldo agregado correctamente.',
       project,
-      newTotalAmount: newAmountBank.rows[0].saldo_total
+      newTotalAmount: newAmountBank.rows[0].saldo_total,
+      movement: movement.rows[0]
     }
   }
 
@@ -147,16 +158,26 @@ export class ProjectModel {
       monto_gastado: withDrawAmount.rows[0].monto_gastado
     }
     
-    await db.execute({
-      sql: 'INSERT INTO Movimientos (id_usuario, id_proyecto, transaccion, monto, descripcion, fecha) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)',
+    const newMovement = await db.execute({
+      sql: 'INSERT INTO Movimientos (id_usuario, id_proyecto, transaccion, monto, descripcion, fecha) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING *',
       args: [id_user, project.id_proyecto, 'Retiro', monto, descripcion]
+    })
+
+    const movement = await db.execute({
+      sql: `SELECT m.id_movimiento, m.id_usuario, u.nombre AS nombre_usuario, u.apellido AS apellido_usuario, m.id_proyecto, p.nombre AS nombre_proyecto, m.transaccion, m.monto, m.descripcion, DATETIME(m.fecha, '-4 hours') AS fecha
+          FROM Movimientos m
+          JOIN Usuarios u ON m.id_usuario = u.id_usuario
+          JOIN Proyectos p ON m.id_proyecto = p.id_proyecto 
+          WHERE m.id_movimiento = ?`,
+      args: [newMovement.rows[0].id_movimiento]
     })
 
     return {
       success: true,
       message: 'Operacion realizada exitosamente.',  
       project,
-      newTotalAmount: newAmountBank.rows[0].saldo_total   
+      newTotalAmount: newAmountBank.rows[0].saldo_total,
+      movement: movement.rows[0]
     }
   }
 }

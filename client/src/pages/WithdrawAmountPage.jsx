@@ -7,12 +7,12 @@ import { useEffect } from "react";
 import { useBank } from "../context/BankContext";
 import { Fade } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TransitionSchema } from "../schemas/transaction.schema";
+import { TransitionWithProjectSchema } from "../schemas/transaction.schema"
 
 export function WithdrawAmountPage () {
   const { getBankData, withdrawAmount } = useBank()
   const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch, reset } = useForm({
-    resolver: zodResolver(TransitionSchema)
+    resolver: zodResolver(TransitionWithProjectSchema)
   })
 
   useEffect(() => {

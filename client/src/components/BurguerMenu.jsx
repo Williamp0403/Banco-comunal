@@ -19,8 +19,10 @@ export function BurguerMenu () {
             <CloseIcon className='cursor-pointer' fontSize='large' onClick={toggleMenu}/>
           </div>
           <ul className="flex flex-col justify-center items-start">
-            <li className="p-4 border-t border-zinc-500 w-full" onClick={toggleMenu}>
-              <NavLink className='font-bold' to='/dashboard'>Inicio</NavLink>
+           <li className="border-t border-zinc-500 w-full">
+              <NavLink className="p-4 font-bold w-full block" to="/dashboard" onClick={toggleMenu}>
+                Inicio
+              </NavLink>
             </li>
             <li className="w-full">
               <AccordionUsage 
@@ -43,23 +45,22 @@ export function BurguerMenu () {
                 title='Transacciones'
                   options={[
                   {
-                    name: 'Agregar fondos',
-                    to: '/proyectos'
+                    name: 'Agregar saldo',
+                    to: '/agregar-saldo'
                   },
                   {
-                    name: 'Retirar fondos',
-                    to: '/crear-proyecto'
+                    name: 'Retirar saldo',
+                    to: '/retirar-saldo'
                   }
                 ]}
                 handleClick={() => setIsOpen(!isOpen)}
               />
             </li>
-            {/* <li>
-              <AccordionUsage title='Movimientos'/>
+           <li className="border-t border-zinc-500 w-full">
+              <NavLink className="p-4 font-bold w-full block" to="/movimientos" onClick={toggleMenu}>
+                Movimientos
+              </NavLink>
             </li>
-            <li>
-              <AccordionUsage title='Reportes'/>
-            </li> */}
           </ul>
         </div>
       </div>

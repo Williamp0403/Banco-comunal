@@ -19,7 +19,7 @@ export class MovementsModel {
           FROM Movimientos m
           JOIN Usuarios u ON m.id_usuario = u.id_usuario
           JOIN Proyectos p ON m.id_proyecto = p.id_proyecto
-          WHERE m.fecha BETWEEN ? AND ?;
+          WHERE DATETIME(m.fecha, '-4 hours') BETWEEN ? AND ?;
       `,
       args: [since, until],
     });

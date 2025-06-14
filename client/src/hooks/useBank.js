@@ -79,7 +79,8 @@ export function useBank() {
   async function addAmount (data, id, close) {
     try {
       const response = await addAmountRequest(data, id)
-      const { project: projectUpdated, newTotalAmount } = response.data
+      console.log(response)
+      const { project: projectUpdated, newTotalAmount, movement } = response.data
 
       setProjects(prevProjects =>
         prevProjects.map(project =>
@@ -89,7 +90,7 @@ export function useBank() {
         )
       )
       setTotalCredit(newTotalAmount)
-
+      setLatestMovements(prevMovements => [movement, ...prevMovements].slice(0, 5))
       toast.success('Saldo agregado correctamente.')
       close()
     } catch (e) {
@@ -101,7 +102,7 @@ export function useBank() {
   async function withdrawAmount (data, id, close) {
     try {
       const response = await withdrawAmountRequest(data, id)
-      const { project: projectUpdated, newTotalAmount } = response.data
+      const { project: projectUpdated, newTotalAmount, movement } = response.data
 
       setProjects(prevProjects =>
         prevProjects.map(project =>
@@ -111,7 +112,7 @@ export function useBank() {
         )
       )
       setTotalCredit(newTotalAmount)
-
+      setLatestMovements(prevMovements => [movement, ...prevMovements].slice(0, 5))
       toast.success('Operacion realizada exitosamente.')
       close()
     } catch (e) {

@@ -14,8 +14,9 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { MenuItem, Tooltip } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { Input, InputDate, Textarea } from "../components/Input"
-import { addAmountSchema, UpdateStateSchema } from '../schemas/project.schema';
+import { UpdateStateSchema } from '../schemas/project.schema';
 import { useBank } from '../context/BankContext';
+import { TransitionSchema } from "../schemas/transaction.schema"
 
 export function ModalLogout() {
   const { logout } = useAuth()
@@ -65,7 +66,7 @@ export function ModalLogout() {
 
 export function ModalTransaction({ action, title, Icon, name, id }) {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
-    resolver: zodResolver(addAmountSchema)
+    resolver: zodResolver(TransitionSchema)
   })
   const [open, setOpen] = React.useState(false)
 

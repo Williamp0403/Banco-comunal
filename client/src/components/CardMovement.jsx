@@ -6,7 +6,7 @@ export function CardMovement ({ movement }) {
   return (
     <div className="flex items-center justify-between p-3 border border-gray-400 rounded-md">
       <div className='flex items-center gap-x-2'>
-        <span className={`${transaccion === "Retiro" ? 'bg-red-200' : 'bg-green-200'} w-8 h-8 flex items-center justify-center rounded-full`}>
+       <span className={`${transaccion === "Retiro" ? 'bg-red-200' : 'bg-green-200'} w-8 h-8 min-w-8 min-h-8 flex items-center justify-center rounded-full`}>         
           {
             transaccion === "Retiro" ? <TrendingDown sx={{ fill: 'red' }} fontSize='small'/>
             : <TrendingUp sx={{ fill: 'green' }} fontSize='small'/>

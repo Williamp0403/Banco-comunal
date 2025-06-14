@@ -22,7 +22,6 @@ export function CreateProjectPage () {
   }, [selectState, setValue]);
 
   const onSubmit = handleSubmit(async data => {
-    console.log(data)
     await createProject(data, reset)
   })
 

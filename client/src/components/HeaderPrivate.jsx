@@ -8,7 +8,7 @@ export function HeaderPrivate () {
   return (
     <header className="sticky top-0 z-5 bg-zinc-100">
       <nav className="flex items-center justify-between px-4 lg:px-8">
-        <img src={BancoDeLaComuna} className='w-full max-w-20 sm:max-w-25' alt="Banco de la comuna" />
+        <img src={BancoDeLaComuna} className='w-full max-w-25' alt="Banco de la comuna" />
         <ul className='hidden md:flex md:justify-between md:gap-x-6 md:items-center'>
           <li>
             <NavLink to='/dashboard'>Inicio</NavLink>

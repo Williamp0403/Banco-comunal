@@ -59,13 +59,17 @@ export const UpdateStateSchema = z.object({
     .refine(value => dayjs(value).isAfter(dayjs(), "day"), { message: "La fecha límite debe ser posterior a la fecha actual." })
 });
 
-export const addAmountSchema = z.object({
+export const TransitionSchema = z.object({
   monto: z
-    .number({ message: 'El monto es requerido.' })
-    .min(0, { message: 'El monto no puede ser menor a 0bs.' })
-    .max(99999999.99, { message: "El monto máximo permitido es 99.999.999,99bs" }),
+    .number({ message: "El monto es requerido." })
+    .min(0, { message: "El monto no puede ser menor a 0 Bs." })
+    .max(99999999.99, { message: "El monto máximo permitido es 99.999.999,99 Bs." }),
   descripcion: z
-    .string({ message: 'La descripción es requerida.' })
+    .string({ message: "La descripción es requerida." })
     .trim()
-    .min(5, { message: 'La descripción debe tener más de 5 caracteres.' })
-})
+    .min(5, { message: "La descripción debe tener más de 5 caracteres." })
+    .max(40, { message: "La descripción no puede tener más de 40 caracteres." }),
+  id_proyecto: z
+    .number({ message: "El proyecto es requerido." })
+    .optional(), // Hace que id_proyecto sea opcional
+});

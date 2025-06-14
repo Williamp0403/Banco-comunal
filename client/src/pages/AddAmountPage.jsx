@@ -7,12 +7,12 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { useEffect } from "react";
 import { useBank } from "../context/BankContext";
 import { Fade } from "@mui/material";
-import { TransitionSchema } from "../schemas/transaction.schema";
+import { TransitionWithProjectSchema } from "../schemas/transaction.schema"
 
 export function AddAmountPage () {
   const { getBankData, addAmount } = useBank()
   const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, reset, watch } = useForm({
-    resolver: zodResolver(TransitionSchema)
+    resolver: zodResolver(TransitionWithProjectSchema)
   })
 
   useEffect(() => {
