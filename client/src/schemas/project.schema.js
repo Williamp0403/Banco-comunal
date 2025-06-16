@@ -11,10 +11,13 @@ export const projectSchema = z.object({
     .string({ message: "La descripción es requerida." })
     .trim()
     .min(5, { message: "La descripción debe tener más de 5 caracteres." }),
-  monto_total: z
-    .number({ message: "El monto es requerido." })
-    .min(0, { message: "El monto no puede ser menor a 0 Bs." })
-    .max(99999999.99, { message: "El monto máximo permitido es 99.999.999,99 Bs." }),
+monto_total: z
+  .number({
+    required_error: "El monto es requerido",
+    invalid_type_error: "Debe ser un número válido"
+  })
+  .min(0.01, "El monto debe ser mayor a 0 Bs.")
+  .max(99999999.99, "El monto máximo es 99.999.999,99 Bs."),
   estado: z.enum(["Pendiente", "En Progreso"], {
     errorMap: () => ({
       message: "El estado debe ser 'Pendiente' o 'En Progreso'."

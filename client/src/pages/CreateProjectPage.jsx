@@ -1,4 +1,4 @@
-import { Input, InputDate, Textarea } from "../components/Input"
+import { InputMonto, Input, InputDate, Textarea } from "../components/Input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { projectSchema } from "../schemas/project.schema"
@@ -9,11 +9,14 @@ import { Fade } from "@mui/material"
 
 export function CreateProjectPage () {
   const { createProject } = useBank()
-  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue, reset } = useForm({
-    resolver: zodResolver(projectSchema)
+  const {  register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue, reset } = useForm({
+    resolver: zodResolver(projectSchema),
   })
 
   const selectState = watch("estado"); 
+  const monto = watch("monto_total")
+
+  console.log(monto)
 
   useEffect(() => {
     if (selectState !== "En Progreso") {
@@ -22,6 +25,7 @@ export function CreateProjectPage () {
   }, [selectState, setValue]);
 
   const onSubmit = handleSubmit(async data => {
+    console.log(data)
     await createProject(data, reset)
   })
 
@@ -30,7 +34,7 @@ export function CreateProjectPage () {
       <main className="container mx-auto ">
         <section className="p-8 sm:p-10">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium mb-5">Crear Proyecto</h1>
-          <div className="max-w-md w-full flex flex-col bg-white p-5 shadow-2xl rounded-xl shadow-zinc-700 gap-4 items-center mx-auto">
+          <div className="max-w-md w-full flex flex-col bg-white p-5 border border-zinc-400 rounded-lg gap-4 items-center mx-auto">
             <h4 className="font-medium text-xl text-center">Datos del proyecto</h4>
             <form className="w-full flex flex-col gap-4" onSubmit={onSubmit}>
               <div className="flex gap-x-5">
@@ -41,12 +45,12 @@ export function CreateProjectPage () {
                   register={register} 
                   errors={errors.nombre}
                 />
-                <Input 
-                  type='number' 
-                  name='monto_total' 
-                  label='Monto' 
-                  register={register} 
-                  errors={errors.monto_total}
+                <InputMonto
+                  name="monto_total"
+                  label="Monto"
+                  error={errors.monto_total}
+                  setValue={setValue}
+                  value={monto}
                 />
               </div>
               <Textarea 
@@ -75,7 +79,7 @@ export function CreateProjectPage () {
               <button 
                 disabled={isSubmitting}
                 className="bg-red-400 font-semibold text-white py-3 rounded-lg hover:bg-red-500 transition ease-in-out duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                Crear
+                Crear Proyecto
               </button>
             </form>
           </div>

@@ -20,7 +20,7 @@ export function BurguerMenu () {
           </div>
           <ul className="flex flex-col justify-center items-start">
            <li className="border-t border-zinc-500 w-full">
-              <NavLink className="p-4 font-bold w-full block" to="/dashboard" onClick={toggleMenu}>
+              <NavLink className="p-4 font-semibold w-full block" to="/dashboard" onClick={toggleMenu}>
                 Inicio
               </NavLink>
             </li>
@@ -57,7 +57,7 @@ export function BurguerMenu () {
               />
             </li>
            <li className="border-t border-zinc-500 w-full">
-              <NavLink className="p-4 font-bold w-full block" to="/movimientos" onClick={toggleMenu}>
+              <NavLink className="p-4 font-semibold w-full block" to="/movimientos" onClick={toggleMenu}>
                 Movimientos
               </NavLink>
             </li>

@@ -7,6 +7,7 @@ import { NavProjects } from "../components/NavProjects"
 import { Fade } from "@mui/material"
 import { CardMovement } from "../components/CardMovement";
 import { useFilter } from "../hooks/useFilter";
+import { formatCurrency } from "../utils/formatCurrency"
 
 export function DashboardPage () {
   const { user } = useAuth()
@@ -34,7 +35,9 @@ export function DashboardPage () {
                 <article className="flex flex-col justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
                   <div className="flex flex-col gap-y-1">
                     <h3 className="text-lg md:text-xl font-medium">Saldo Total</h3>
-                    <h2 className="text-xl lg:text-2xl font-bold">{totalCredit} Bs</h2> 
+                    <h2 className="text-xl lg:text-2xl font-bold">
+                      {formatCurrency(totalCredit)} Bs
+                    </h2>
                   </div>
                   <p className="text-sm sm:text-base text-zinc-500">Fondos disponibles en el banco comunal</p>
                 </article>
@@ -52,17 +55,20 @@ export function DashboardPage () {
                     </div>
                     <p className="text-sm sm:text-base text-zinc-500">Cantidad total de proyectos completados</p>  
                 </article>
-                <article className="flex flex-col md:col-span-3 justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
-                  <div className="flex items-center gap-x-2 bg-white">
-                    <AccessTimeIcon/>
-                    <h1 className="text-xl md:text-2xl font-bold">Últimos Movimientos</h1>
-                  </div>
-                    {
-                      latestMovements.map(movement => (
-                        <CardMovement key={movement.id_movimiento} movement={movement}/>
-                      ))
-                    }
-                </article>
+               <article className="flex flex-col md:col-span-3 justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
+                <div className="flex items-center gap-x-2 bg-white">
+                  <AccessTimeIcon />
+                  <h1 className="text-xl md:text-2xl font-bold">Últimos Movimientos</h1>
+                </div>
+                
+                {latestMovements.length > 0 ? (
+                  latestMovements.map(movement => (
+                    <CardMovement key={movement.id_movimiento} movement={movement} />
+                  ))
+                ) : (
+                  <p className="text-center text-gray-500">No hay movimientos recientes.</p>
+                )}
+              </article>
                 <NavProjects/>
               </div>
             )

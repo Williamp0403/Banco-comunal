@@ -1,4 +1,5 @@
 import { Document, Page, Text, StyleSheet, View } from "@react-pdf/renderer";
+import { formatCurrency } from "../utils/formatCurrency";
 
 const styles = StyleSheet.create({
   page: {
@@ -62,7 +63,7 @@ export function PDF({ movements }) {
                 <Text style={styles.cell}>{movement.nombre_usuario + " " + movement.apellido_usuario}</Text>
                 <Text style={styles.cell}>{movement.transaccion}</Text>
                 <Text style={styles.cell}>{movement.descripcion}</Text>
-                <Text style={styles.rightAlignedCell}>{movement.monto} Bs</Text>
+                <Text style={styles.rightAlignedCell}>{formatCurrency(movement.monto)} Bs</Text>
               </View>
             ))}
           </View>

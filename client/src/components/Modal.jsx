@@ -13,7 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { MenuItem, Tooltip } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import { Input, InputDate, Textarea } from "../components/Input"
+import { InputDate, InputMonto, Textarea } from "../components/Input"
 import { UpdateStateSchema } from '../schemas/project.schema';
 import { useBank } from '../context/BankContext';
 import { TransitionSchema } from "../schemas/transaction.schema"
@@ -65,8 +65,8 @@ export function ModalLogout() {
 }
 
 export function ModalTransaction({ action, title, Icon, name, id }) {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
-    resolver: zodResolver(TransitionSchema)
+  const { register, handleSubmit, formState: { errors, isSubmitting }, watch, setValue } = useForm({
+    resolver: zodResolver(TransitionSchema),
   })
   const [open, setOpen] = React.useState(false)
 
@@ -77,6 +77,8 @@ export function ModalTransaction({ action, title, Icon, name, id }) {
   const handleClose = () => {
     setOpen(false)
   };
+
+  const monto = watch("monto")
 
   const onSubmit = handleSubmit(async data => {
     await action(data, id, handleClose)
@@ -106,8 +108,14 @@ export function ModalTransaction({ action, title, Icon, name, id }) {
         <DialogContent className='space-y-5'>
           <p className='text-zinc-500 mb-5'>{title} al proyecto "{name}".</p>
           <form onSubmit={onSubmit} className='flex flex-col gap-y-4'>
-            <Input type='number' name='monto' label='Monto' register={register} errors={errors.monto} />
-            <Textarea  name='descripcion' label='Descripción' register={register} errors={errors.descripcion} />
+            <InputMonto
+              name="monto"
+              label="Monto"
+              error={errors.monto}
+              setValue={setValue}
+              value={monto}
+            />
+            <Textarea name='descripcion' label='Descripción' register={register} errors={errors.descripcion} />
             <DialogActions>
               <button 
                 type='button'

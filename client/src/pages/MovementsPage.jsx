@@ -10,6 +10,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer"
 import { PDF } from "../components/PDF";
 import { Loading } from "../components/Loading";
 import { ButtonPDF } from "../components/ButtonPDF";
+import { formatCurrency } from "../utils/formatCurrency";
 
 export function MovementsPage() {
   const { getMovements, movements } = useMovement();
@@ -74,8 +75,8 @@ export function MovementsPage() {
                             <TableCell>{movement.descripcion}</TableCell>
                             <TableCell align="right">
                               {movement.transaccion === "Depósito" ?
-                                <span className="font-bold text-green-500">+{movement.monto} Bs</span> :
-                                <span className="font-bold text-red-500">-{movement.monto} Bs</span>
+                                <span className="font-bold text-green-500">+{formatCurrency(movement.monto)} Bs</span> :
+                                <span className="font-bold text-red-500">-{formatCurrency(movement.monto)} Bs</span>
                               }
                             </TableCell>
                           </TableRow>

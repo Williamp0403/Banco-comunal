@@ -28,20 +28,17 @@ export function useAuth () {
   async function login (data) {
     try {
       const res = await loginRequest(data)
-      console.log(res)
       setUser(res.data.usuario)
       setIsAuthenticated(true)
       toast.success(`Sesion iniciada correctamente.` )
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }
 
   async function logout () {
     try {
-      const res = await logoutRequest()
-      console.log('logut', res)
+      await logoutRequest()
       setIsAuthenticated(false)
       setUser(null)
     } catch (e) {

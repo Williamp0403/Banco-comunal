@@ -91,7 +91,7 @@ export class ProjectModel {
 
     // Agregando el monto al proyecto elegido.
     const addAmount = await db.execute({
-      sql: 'UPDATE Proyectos SET monto_total = monto_total + ? WHERE id_proyecto = ? AND estado = "En Progreso" RETURNING *',
+      sql: 'UPDATE Proyectos SET monto_total = ROUND(monto_total + ?, 2) WHERE id_proyecto = ? AND estado = "En Progreso" RETURNING *',
       args: [monto ,id]
     })
 
@@ -147,7 +147,7 @@ export class ProjectModel {
     if(monto > monto_disponible) return { success: false, status: 409, message: 'Saldo insuficiente.' }
 
     const withDrawAmount = await db.execute({
-      sql: 'UPDATE Proyectos SET monto_gastado = monto_gastado + ? WHERE id_proyecto = ? AND estado = "En Progreso" RETURNING *' ,
+      sql: 'UPDATE Proyectos SET monto_gastado = ROUND(monto_gastado + ?, 2) WHERE id_proyecto = ? AND estado = "En Progreso" RETURNING *' ,
       args: [monto, id]
     })
 

@@ -7,6 +7,8 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarTodayOutlined';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import PersonIcon from '@mui/icons-material/Person';
 import { Fade } from "@mui/material";
+import { formatCurrency } from "../utils/formatCurrency";
+import { formatDate } from "../utils/formatDate";
 
 export function DetailsProjectPage () {
   const { id } = useParams()
@@ -51,14 +53,14 @@ export function DetailsProjectPage () {
                           <h4 className="font-semibold">Fecha de inicio</h4>
                           <div className="flex items-start gap-x-2">
                             <CalendarTodayIcon htmlColor="gray" fontSize="small"/>
-                            <span className=" text-zinc-700">{project.fecha_inicio}</span>
+                            <span className=" text-zinc-700">{formatDate(project.fecha_inicio)}</span>
                           </div>
                         </div>
                         <div>
                           <h4 className="font-semibold">Fecha límite</h4>
                           <div className="flex items-start gap-x-2">
                             <EventBusyIcon htmlColor="gray" fontSize="small"/>
-                            <span className=" text-zinc-700">{project.fecha_fin}</span>
+                            <span className=" text-zinc-700">{formatDate(project.fecha_fin)}</span>
                           </div>                        
                         </div>
                       </div>
@@ -76,16 +78,16 @@ export function DetailsProjectPage () {
                   <h2 className="text-xl sm:text-2xl font-semibold">Finanzas</h2>
                   <div className="flex items-center col-span-2 justify-between bg-blue-100 p-3 rounded-lg">
                     <h3 className="text-green-600 font-medium">Monto disponible</h3>
-                    <span className="font-bold text-lg sm:text-xl">{ project.monto_total - project.monto_gastado } Bs</span>
+                    <span className="font-bold text-lg sm:text-xl">{formatCurrency(project.monto_total - project.monto_gastado)} Bs</span>
                   </div>
                   <div className="flex items-center col-span-2 gap-x-4 justify-between">
                     <div className="bg-blue-100 w-full col-start-1 p-3 rounded-lg">
                       <h3 className="text-blue-600 font-medium">Total ingresos</h3>
-                      <span className="font-bold text-lg sm:text-xl">{ project.monto_total } Bs</span>
+                      <span className="font-bold text-lg sm:text-xl">{formatCurrency(project.monto_total)} Bs</span>
                     </div>
                     <div className="bg-red-100 w-full col-start-2 p-3 rounded-lg">
                       <h3 className="text-red-600 font-medium">Total gastos</h3>
-                      <span className="font-bold text-lg sm:text-xl">{project.monto_gastado}</span>
+                      <span className="font-bold text-lg sm:text-xl">{formatCurrency(project.monto_gastado)} Bs</span>
                     </div>
                   </div>                
                 </article>

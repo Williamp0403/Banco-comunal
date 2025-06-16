@@ -1,6 +1,6 @@
 
 import { SelectFilter } from "../components/Select";
-import { Input, Textarea } from "../components/Input"
+import { InputMonto, Textarea } from "../components/Input"
 import { useForm } from "react-hook-form"
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import { useEffect } from "react";
@@ -11,13 +11,16 @@ import { TransitionWithProjectSchema } from "../schemas/transaction.schema"
 
 export function WithdrawAmountPage () {
   const { getBankData, withdrawAmount } = useBank()
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch, reset } = useForm({
-    resolver: zodResolver(TransitionWithProjectSchema)
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, watch, reset, formState } = useForm({
+    resolver: zodResolver(TransitionWithProjectSchema),
   })
 
   useEffect(() => {
-    getBankData();
-  }, []);
+    getBankData()
+  }, [])
+
+
+  const monto = watch("monto")
 
   const onSumbit = handleSubmit(async values => {
     const dataTransaction = {
@@ -39,7 +42,13 @@ export function WithdrawAmountPage () {
               <h4 className="font-medium text-xl text-center">Datos de la transacción</h4>
               <form onSubmit={onSumbit} className="w-full flex flex-col gap-4">
                 <SelectFilter watch={watch} setValue={setValue} errors={errors} />
-                <Input type='number' name='monto' label='Monto' register={register} errors={errors.monto}/>
+                <InputMonto
+                  name="monto"
+                  label="Monto"
+                  error={errors.monto}
+                  setValue={setValue}
+                  value={monto}
+                />
                 <Textarea label='Descripción' register={register} name='descripcion' errors={errors.descripcion}/>
                 <button 
                   disabled={isSubmitting}

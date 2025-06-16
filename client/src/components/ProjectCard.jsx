@@ -5,6 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { ModalTransaction } from "./Modal";
+import { formatCurrency } from "../utils/formatCurrency";
 
 export function ProjectCard ({ project }) {
   const { nombre, descripcion, monto_total, monto_gastado, estado } = project
@@ -19,7 +20,9 @@ export function ProjectCard ({ project }) {
       <p className="text-zinc-700 text-sm font-medium truncate">{descripcion}</p>
       <div className="flex items-center justify-between">
         <span className="text-zinc-700 text-sm font-medium">Monto disponible</span>
-        <h3 className="text-xl text-end font-bold">{monto_total - monto_gastado} Bs</h3>
+        <h3 className="text-xl text-end font-bold">
+          {formatCurrency(monto_total - monto_gastado)} Bs
+        </h3>
       </div>
       { estado === 'En Progreso' &&  
         <div className="flex items-center justify-end gap-x-3">
@@ -33,8 +36,7 @@ export function ProjectCard ({ project }) {
           <h4 className="text-zinc-700 text-sm font-medium">{project.nombre_usuario + " " + project.apellido_usuario}</h4>
         </div>
         <ChipState title={estado}/>
-      </div>
-     
+      </div>    
     </div>
   )
 }

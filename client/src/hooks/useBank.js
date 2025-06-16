@@ -22,7 +22,6 @@ export function useBank() {
       setProjects(projectsData.proyectos);
       setLatestMovements(movementsData.ultimosMovimientos);
     } catch (e) {
-      console.error(e);
       toast.error(handlingErros(e));
     } finally {
       setLoading(false);
@@ -31,11 +30,10 @@ export function useBank() {
 
   async function createProject(data, reset) {
     try {
-      const response = await createProjectRequest(data)
+      await createProjectRequest(data)
       reset()
       toast.success('Proyecto creado correctamente.')
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }
@@ -59,19 +57,16 @@ export function useBank() {
       handleCloseMenu()
       toast.success('Proyecto actualizado ha "En progreso" exitosamente.')
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }
 
   async function deleteProject (id) {
     try {
-      const response = await deleteProjectRequest(id)
-      console.log(response)
+      await deleteProjectRequest(id)
       setProjects(prevProjects => prevProjects.filter(project => (project.id_proyecto !== id)))
       toast.success('Proyecto eliminado correctamente.')
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }
@@ -79,7 +74,6 @@ export function useBank() {
   async function addAmount (data, id, close) {
     try {
       const response = await addAmountRequest(data, id)
-      console.log(response)
       const { project: projectUpdated, newTotalAmount, movement } = response.data
 
       setProjects(prevProjects =>
@@ -94,12 +88,11 @@ export function useBank() {
       toast.success('Saldo agregado correctamente.')
       close()
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }
 
-  async function withdrawAmount (data, id, close) {
+  async function withdrawAmount (data, id, reset) {
     try {
       const response = await withdrawAmountRequest(data, id)
       const { project: projectUpdated, newTotalAmount, movement } = response.data
@@ -114,9 +107,8 @@ export function useBank() {
       setTotalCredit(newTotalAmount)
       setLatestMovements(prevMovements => [movement, ...prevMovements].slice(0, 5))
       toast.success('Operacion realizada exitosamente.')
-      close()
+      reset()
     } catch (e) {
-      console.log(e)
       toast.error(handlingErros(e))
     }
   }

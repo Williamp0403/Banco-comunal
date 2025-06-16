@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { NumericFormat } from 'react-number-format';
+import { NumericFormat } from 'react-number-format'
 import dayjs from "dayjs"
 
 export function Input ({ type, name, label, register, errors }) {
@@ -73,21 +73,43 @@ export function InputDate({ name, label, register, errors, restrictionType }) {
   );
 }
 
-
-export function InputMonto({ value, onChange, ...props }) {
+export function InputMonto({ name, label, error, setValue, value }) {
   return (
     <NumericFormat
-      {...props}
-      value={value}
+value={value === undefined || value === null ? '' : value}
+
+      customInput={TextField}
+      label={label}
+      name={name}
       thousandSeparator="."
       decimalSeparator=","
+      decimalScale={2}
+      fixedDecimalScale
       allowNegative={false}
       onValueChange={(values) => {
-        onChange(values.floatValue);
+        setValue(name, values.floatValue)
       }}
-      className="w-full border rounded-md p-3 focus:outline-none"
+      error={!!error}
+      helperText={error?.message}
+      fullWidth
+      variant="outlined"
+      sx={{
+        "& .MuiOutlinedInput-root": {
+          "&.Mui-focused": {
+            borderColor: "black",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "black",
+            },
+          },
+        },
+        "& .MuiInputLabel-root": {
+          "&.Mui-focused": {
+            color: "black"
+          },
+        },
+      }}
     />
-  );
+  )
 }
 
 export function Textarea ({ label, register, name, errors }) {

@@ -1,4 +1,6 @@
 import { TrendingUp, TrendingDown } from '@mui/icons-material';
+import { formatCurrency } from '../utils/formatCurrency';
+import { formatDate } from '../utils/formatDate';
 
 export function CardMovement ({ movement }) {
   const { nombre_proyecto, descripcion, transaccion, monto, fecha } = movement
@@ -14,13 +16,13 @@ export function CardMovement ({ movement }) {
         </span>
         <div className='flex flex-col'>
           <h4 className='text-sm sm:text-base font-medium'>{nombre_proyecto}</h4>
-          <p className='text-xs sm:text-sm text-zinc-500 font-medium'>{descripcion + " • " + fecha} </p>
+          <p className='text-xs sm:text-sm text-zinc-500 font-medium'>{descripcion + " • " + formatDate(fecha)} </p>
         </div>
       </div>
       <div>
         {
-          transaccion === "Retiro" ? <h5 className='text-xs sm:text-base font-medium text-red-500'>-{monto} Bs</h5>
-          : <h5 className='text-xs sm:text-base font-medium text-green-500'>+{monto} Bs</h5>
+          transaccion === "Retiro" ? <h5 className='text-xs sm:text-base font-medium text-red-500'>-{formatCurrency(monto)} Bs</h5>
+          : <h5 className='text-xs sm:text-base font-medium text-green-500'>+{formatCurrency(monto)} Bs</h5>
         }
       </div>
     </div>
