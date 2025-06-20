@@ -49,4 +49,8 @@ export class MovementsModel {
     return latestMovements.rows 
   }
   
+  static async queryGetAllMovements () {
+    const movements = await db.execute("SELECT id_movimiento, id_usuario, id_proyecto, transaccion, monto, descripcion, DATETIME(fecha, '-4 hours') AS fecha FROM Movimientos")
+    return movements.rows
+  }
 }

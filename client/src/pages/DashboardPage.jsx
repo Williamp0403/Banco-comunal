@@ -58,7 +58,7 @@ export function DashboardPage () {
                <article className="flex flex-col md:col-span-3 justify-between gap-y-5 bg-white p-5 border border-zinc-400 rounded-lg">
                 <div className="flex items-center gap-x-2 bg-white">
                   <AccessTimeIcon />
-                  <h1 className="text-xl md:text-2xl font-bold">Últimos Movimientos</h1>
+                  <h1 className="text-xl md:text-2xl font-semibold">Últimos Movimientos</h1>
                 </div>
                 
                 {latestMovements.length > 0 ? (

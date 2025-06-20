@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormControl, FormHelperText, InputLabel, MenuItem } from "@mui/material";
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useBank } from "../context/BankContext";
+import { formatCurrency } from '../utils/formatCurrency'
 
 export function SelectBasic ({ name, label, register, errors }) {
   const [state, setState] = useState('');
@@ -61,16 +62,17 @@ export function SelectFilter({ setValue, watch, errors }) {
 
   const proyectosEnProgreso = projects.filter((project) => project.estado === "En Progreso");
 
-  // 🔹 Obtén el valor actual de `id_proyecto` desde React Hook Form
   const selectedProject = proyectosEnProgreso.find(p => p.id_proyecto === watch("id_proyecto")) || null;
 
   return (
     <Autocomplete
       disablePortal
       options={proyectosEnProgreso}
-      value={selectedProject} // 👈 Esto asegura que el input se borre cuando `reset()` lo limpie
-      getOptionLabel={(option) => `${option.nombre} - ${option.monto_total - option.monto_gastado} Bs`}
-      onChange={(_, value) => setValue("id_proyecto", value?.id_proyecto || "")} // 👈 Borra el valor si se resetea
+      value={selectedProject} 
+      getOptionLabel={(option) =>
+        `${option.nombre} - ${formatCurrency(option.monto_total - option.monto_gastado)} Bs`
+      }
+      onChange={(_, value) => setValue("id_proyecto", value?.id_proyecto || "")}
       renderInput={(params) => (
         <TextField 
           {...params} 

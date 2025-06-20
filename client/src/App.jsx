@@ -12,6 +12,7 @@ import { DetailsProjectPage } from "./pages/DetailsProjectPage"
 import { AddAmountPage } from "./pages/AddAmountPage"
 import { WithdrawAmountPage } from "./pages/WithdrawAmountPage"
 import { MovementsPage } from "./pages/MovementsPage"
+import { ReportsPage } from "./pages/ReportsPage"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                       <Route path="/agregar-saldo" element={<AddAmountPage/>}/>
                       <Route path="/retirar-saldo" element={<WithdrawAmountPage/>}/>
                       <Route path="/movimientos" element={<MovementsPage/>}/>
+                      <Route path="/reportes" element={<ReportsPage/>}/>
                     </Route>
 
                     <Route path='*' element={<h1>404 Not Found</h1>}/>

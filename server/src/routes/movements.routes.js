@@ -8,5 +8,6 @@ const routes = Router()
 
 routes.get('/movements', validateToken, validateData(MovementSchema), MovementsController.getMovements)
 routes.get('/latest-movements', validateToken, MovementsController.latestMovements)
+routes.get('/movements-all', validateToken, MovementsController.getAllMovements)
 
 export default routes

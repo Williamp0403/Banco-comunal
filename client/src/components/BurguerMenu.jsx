@@ -56,9 +56,14 @@ export function BurguerMenu () {
                 handleClick={() => setIsOpen(!isOpen)}
               />
             </li>
-           <li className="border-t border-zinc-500 w-full">
+            <li className="border-t border-zinc-500 w-full">
               <NavLink className="p-4 font-semibold w-full block" to="/movimientos" onClick={toggleMenu}>
                 Movimientos
+              </NavLink>
+            </li>
+            <li className="border-t border-zinc-500 w-full">
+              <NavLink className="p-4 font-semibold w-full block" to="/reportes" onClick={toggleMenu}>
+                Reportes
               </NavLink>
             </li>
           </ul>
